@@ -71,6 +71,8 @@ func NewImageView(otps ...ImageOptions) (*ImageView, error) {
 	}
 
 	imgView.Image = img
+	imgView.Image.Border = false
+
 	return imgView, nil
 }
 

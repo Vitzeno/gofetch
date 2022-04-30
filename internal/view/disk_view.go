@@ -22,11 +22,13 @@ func NewDiskView() (*DiskView, error) {
 
 	diskWidget := widgets.NewParagraph()
 	diskWidget.Title = "Disk"
+	diskWidget.Border = false
 	diskWidget.Text = diskInfo.String()
 
 	diskGauge := widgets.NewGauge()
 	diskGauge.Percent = int(diskInfo.UsedPercent)
 	diskGauge.BarColor = ui.ColorGreen
+	//diskGauge.Border = false
 
 	return &DiskView{
 		Widget: diskWidget,

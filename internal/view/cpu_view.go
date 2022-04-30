@@ -3,6 +3,7 @@ package internal
 import (
 	"github.com/pkg/errors"
 
+	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
 
 	data "github.com/vitzeno/gofetch/internal/data"
@@ -19,7 +20,10 @@ func NewCPUView() (*CPUView, error) {
 	}
 
 	cpuWidget := widgets.NewParagraph()
+	cpuWidget.TitleStyle = ui.NewStyle(ui.ColorWhite, ui.ColorBlack, ui.ModifierBold)
 	cpuWidget.Title = "CPU"
+	cpuWidget.Border = false
+
 	for _, cpu := range cpuInfo {
 		cpuWidget.Text += cpu.String()
 	}

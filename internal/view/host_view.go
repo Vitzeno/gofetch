@@ -20,6 +20,7 @@ func NewHostView() (*HostView, error) {
 
 	hostWidget := widgets.NewParagraph()
 	hostWidget.Title = "Host"
+	hostWidget.Border = false
 	hostWidget.Text = hostInfo.String()
 
 	return &HostView{

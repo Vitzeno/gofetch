@@ -24,11 +24,13 @@ func NewMemeView() (*MemView, error) {
 
 	memWidget := widgets.NewParagraph()
 	memWidget.Title = "Memory"
+	memWidget.Border = false
 	memWidget.Text = memInfo.String()
 
 	memGauge := widgets.NewGauge()
 	memGauge.Percent = int(memInfo.UsedPercent)
 	memGauge.BarColor = ui.ColorGreen
+	//memGauge.Border = false
 
 	return &MemView{
 		Widget: memWidget,
