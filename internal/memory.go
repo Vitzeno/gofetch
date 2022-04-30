@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/mem"
 )
@@ -24,4 +26,8 @@ func NewMemInfo() (MemInfo, error) {
 		Total:       mem.Total,
 		UsedPercent: mem.UsedPercent,
 	}, nil
+}
+
+func (m MemInfo) String() string {
+	return fmt.Sprintf("Free: %v\nUsed: %v\nTotal: %v\nUsedPercent: %v\n", m.Free/1024/1024, m.Used/1024/1024, m.Total/1024/1024, m.UsedPercent)
 }

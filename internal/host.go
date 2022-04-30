@@ -1,6 +1,8 @@
 package internal
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/host"
 )
@@ -24,4 +26,8 @@ func NewHostInfo() (HostInfo, error) {
 		Platform:      hostInfo.Platform,
 		Uptime:        hostInfo.Uptime,
 	}, nil
+}
+
+func (h HostInfo) String() string {
+	return fmt.Sprintf("OS: %v\nKernelVersion: %v\nPlatform: %v\nUptime: %v\n", h.OS, h.KernelVersion, h.Platform, h.Uptime)
 }

@@ -3,13 +3,13 @@ module github.com/vitzeno/gofetch
 go 1.18
 
 require (
-	github.com/davecgh/go-spew v1.1.1
+	github.com/gizak/termui/v3 v3.1.0
 	github.com/pkg/errors v0.9.1
 	github.com/shirou/gopsutil v3.21.11+incompatible
 )
 
 require (
-	github.com/gizak/termui/v3 v3.1.0 // indirect
+	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/mattn/go-runewidth v0.0.2 // indirect
 	github.com/mitchellh/go-wordwrap v0.0.0-20150314170334-ad45545899c7 // indirect

@@ -1,11 +1,14 @@
 package internal
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/disk"
 )
 
 type DiskInfo struct {
+	Path        string
 	Free        uint64
 	Used        uint64
 	Total       uint64
@@ -19,9 +22,14 @@ func NewDiskInfo(path string) (DiskInfo, error) {
 	}
 
 	return DiskInfo{
+		Path:        diskInfo.Path,
 		Free:        diskInfo.Free,
 		Used:        diskInfo.Used,
 		Total:       diskInfo.Total,
 		UsedPercent: diskInfo.UsedPercent,
 	}, nil
+}
+
+func (d DiskInfo) String() string {
+	return fmt.Sprintf("Path: %s\nFree: %v\nUsed: %v\nTotal: %v\nUsedPercent: %v\n", d.Path, d.Free/1024/1024, d.Used/1024/1024, d.Total/1024/1024, d.UsedPercent)
 }

@@ -1,13 +1,15 @@
 package internal
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"github.com/shirou/gopsutil/cpu"
 )
 
 type CPUInfo struct {
 	ModelName string
-	Cores     int32
+	Threads   int32
 	Mhz       float64
 }
 
@@ -21,10 +23,14 @@ func NewCPUInfo() ([]CPUInfo, error) {
 	for _, cpu := range cpus {
 		cpuInfo = append(cpuInfo, CPUInfo{
 			ModelName: cpu.ModelName,
-			Cores:     cpu.Cores,
+			Threads:   cpu.Cores,
 			Mhz:       cpu.Mhz,
 		})
 	}
 
 	return cpuInfo, nil
+}
+
+func (c CPUInfo) String() string {
+	return fmt.Sprintf("ModelName: %v\nThreads: %v\nMhz: %v\n", c.ModelName, c.Threads, c.Mhz)
 }
