@@ -29,5 +29,5 @@ func NewMemInfo() (MemInfo, error) {
 }
 
 func (m MemInfo) String() string {
-	return fmt.Sprintf("Free: %v\nUsed: %v\nTotal: %v\nUsedPercent: %v\n", m.Free/1024/1024, m.Used/1024/1024, m.Total/1024/1024, m.UsedPercent)
+	return fmt.Sprintf("Free: %v GB\nUsed: %v GB\nTotal: %v GB\nUsedPercent: %.0f%%\n", m.Free/1024/1024/1024, m.Used/1024/1024/1024, m.Total/1024/1024/1024, m.UsedPercent)
 }

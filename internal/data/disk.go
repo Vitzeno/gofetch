@@ -31,5 +31,5 @@ func NewDiskInfo(path string) (DiskInfo, error) {
 }
 
 func (d DiskInfo) String() string {
-	return fmt.Sprintf("Path: %s\nFree: %v\nUsed: %v\nTotal: %v\nUsedPercent: %v\n", d.Path, d.Free/1024/1024, d.Used/1024/1024, d.Total/1024/1024, d.UsedPercent)
+	return fmt.Sprintf("Path: %s\nFree: %v GB\nUsed: %v GB\nTotal: %v GB\nUsedPercent: %.0f%%\n", d.Path, d.Free/1024/1024/1024, d.Used/1024/1024/1024, d.Total/1024/1024/1024, d.UsedPercent)
 }
