@@ -53,14 +53,11 @@ func getOSLogo() string {
 func main() {
 	ticker := time.NewTicker(UPDATE_INTERVAL)
 	done := make(chan bool)
-
-	argsWithoutProg := os.Args[1:]
+	args := os.Args[1:]
 
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
-	baseGrid := ui.NewGrid()
-	xDim, yDim := ui.TerminalDimensions()
 
 	defer ui.Close()
 
@@ -89,8 +86,8 @@ func main() {
 	}
 
 	var asciiImage *view.AsciiImageView
-	if len(argsWithoutProg) > 0 {
-		asciiImage, err = view.NewAsciiImageView(argsWithoutProg[0], view.WithReversed(true))
+	if len(args) > 0 {
+		asciiImage, err = view.NewAsciiImageView(args[0], view.WithReversed(true))
 	} else {
 		asciiImage, err = view.NewAsciiImageView(getOSLogo(), view.WithReversed(true))
 	}
@@ -105,6 +102,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to load user view: %v\n", err)
 		os.Exit(1)
 	}
+
+	baseGrid := ui.NewGrid()
+	xDim, yDim := ui.TerminalDimensions()
 
 	baseGrid.SetRect(0, 0, xDim, yDim)
 	baseGrid.Set(
@@ -132,6 +132,9 @@ func main() {
 			case <-done:
 				return
 			case <-ticker.C:
+				xDim, yDim := ui.TerminalDimensions()
+				baseGrid.SetRect(0, 0, xDim, yDim)
+
 				err := updateViews(cpuView, memView, diskView, hostView, userView)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Failed to update views: %v\n", err)
