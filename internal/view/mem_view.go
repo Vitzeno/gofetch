@@ -20,7 +20,6 @@ func NewMemeView() (*MemView, error) {
 	}
 
 	memWidget := widgets.NewParagraph()
-	memWidget.Title = "Memory"
 	memWidget.Border = false
 	memWidget.Text = memInfo.String()
 

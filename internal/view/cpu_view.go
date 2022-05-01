@@ -22,7 +22,6 @@ func NewCPUView() (*CPUView, error) {
 
 	cpuWidget := widgets.NewParagraph()
 	cpuWidget.TitleStyle = ui.NewStyle(ui.ColorWhite, ui.ColorBlack, ui.ModifierBold)
-	cpuWidget.Title = "CPU"
 	cpuWidget.Border = false
 
 	for _, cpu := range cpuInfo {

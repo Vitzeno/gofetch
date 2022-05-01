@@ -8,7 +8,6 @@ import (
 )
 
 type DiskInfo struct {
-	Path        string
 	Free        uint64
 	Used        uint64
 	Total       uint64
@@ -22,7 +21,6 @@ func NewDiskInfo(path string) (DiskInfo, error) {
 	}
 
 	return DiskInfo{
-		Path:        diskInfo.Path,
 		Free:        diskInfo.Free,
 		Used:        diskInfo.Used,
 		Total:       diskInfo.Total,
@@ -31,5 +29,5 @@ func NewDiskInfo(path string) (DiskInfo, error) {
 }
 
 func (d DiskInfo) String() string {
-	return fmt.Sprintf("Path: %s\nFree: %v GB\nUsed: %v GB\nTotal: %v GB\nUsedPercent: %.0f%%\n", d.Path, d.Free/1024/1024/1024, d.Used/1024/1024/1024, d.Total/1024/1024/1024, d.UsedPercent)
+	return fmt.Sprintf("Free: %v GB\nUsed: %v GB\nTotal: %v GB\nUsedPercent: %.0f%%\n", d.Free/1024/1024/1024, d.Used/1024/1024/1024, d.Total/1024/1024/1024, d.UsedPercent)
 }

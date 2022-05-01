@@ -92,9 +92,18 @@ func main() {
 		os.Exit(1)
 	}
 
+	userView, err := view.NewUserView()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Failed to load user view: %v\n", err)
+		os.Exit(1)
+	}
+
 	baseGrid.SetRect(0, 0, xDim, yDim)
 	baseGrid.Set(
-		ui.NewCol(0.55, imageView.Image),
+		ui.NewCol(0.55,
+			ui.NewRow(0.8, imageView.Image),
+			ui.NewRow(0.2, userView.Widget),
+		),
 		ui.NewCol(0.45,
 			ui.NewRow(0.25,
 				ui.NewRow(0.8, cpuView.Widget),

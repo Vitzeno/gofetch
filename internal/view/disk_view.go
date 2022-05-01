@@ -21,7 +21,6 @@ func NewDiskView() (*DiskView, error) {
 	}
 
 	diskWidget := widgets.NewParagraph()
-	diskWidget.Title = "Disk"
 	diskWidget.Border = false
 	diskWidget.Text = diskInfo.String()
 
