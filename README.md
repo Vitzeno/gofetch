@@ -4,10 +4,10 @@ Basic crossplatfrom neofetch like program written in go to display system inform
 
 ## Windows
 
-![image](https://user-images.githubusercontent.com/23175651/166122049-2da6a435-9386-4828-859f-760fe8a25ef7.png)
+![image](https://user-images.githubusercontent.com/23175651/166152558-a6b1393c-ce42-4004-b589-66f1a1ae27c1.png)
 
 ## Linux
 
-![image](https://user-images.githubusercontent.com/23175651/166122044-9ecc60ed-c3a2-493e-873a-ce932a7d4eb4.png)
+![image](https://user-images.githubusercontent.com/23175651/166152564-d9225715-621c-402e-a821-3df9d2b8c9d2.png)
 
 
