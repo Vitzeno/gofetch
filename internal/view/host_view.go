@@ -27,3 +27,14 @@ func NewHostView() (*HostView, error) {
 		Widget: hostWidget,
 	}, nil
 }
+
+func (h HostView) Update() error {
+	hostInfo, err := data.NewHostInfo()
+	if err != nil {
+		return errors.Wrap(err, "Failed to load host info")
+	}
+
+	h.Widget.Text = hostInfo.String()
+
+	return nil
+}

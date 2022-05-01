@@ -35,3 +35,15 @@ func NewDiskView() (*DiskView, error) {
 		Gauge:  diskGauge,
 	}, nil
 }
+
+func (d DiskView) Update() error {
+	diskInfo, err := data.NewDiskInfo("/")
+	if err != nil {
+		return errors.Wrap(err, "Failed to load disk info")
+	}
+
+	d.Widget.Text = diskInfo.String()
+	d.Gauge.Percent = int(diskInfo.UsedPercent)
+
+	return nil
+}

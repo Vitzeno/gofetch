@@ -32,3 +32,17 @@ func NewCPUView() (*CPUView, error) {
 		Widget: cpuWidget,
 	}, nil
 }
+
+func (c CPUView) Update() error {
+	cpuInfo, err := data.NewCPUInfo()
+	if err != nil {
+		return errors.Wrap(err, "Failed to load CPU info")
+	}
+
+	c.Widget.Text = ""
+	for _, cpu := range cpuInfo {
+		c.Widget.Text += cpu.String()
+	}
+
+	return nil
+}

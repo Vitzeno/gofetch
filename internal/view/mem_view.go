@@ -1,11 +1,9 @@
 package internal
 
 import (
-	"fmt"
-	"os"
-
 	ui "github.com/gizak/termui/v3"
 	"github.com/gizak/termui/v3/widgets"
+	"github.com/pkg/errors"
 
 	data "github.com/vitzeno/gofetch/internal/data"
 )
@@ -18,8 +16,7 @@ type MemView struct {
 func NewMemeView() (*MemView, error) {
 	memInfo, err := data.NewMemInfo()
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to load memory info: %v\n", err)
-		os.Exit(1)
+		return nil, errors.Wrap(err, "Failed to load memory info")
 	}
 
 	memWidget := widgets.NewParagraph()
@@ -36,4 +33,16 @@ func NewMemeView() (*MemView, error) {
 		Widget: memWidget,
 		Gauge:  memGauge,
 	}, nil
+}
+
+func (m MemView) Update() error {
+	memInfo, err := data.NewMemInfo()
+	if err != nil {
+		return errors.Wrap(err, "Failed to load memory info")
+	}
+
+	m.Widget.Text = memInfo.String()
+	m.Gauge.Percent = int(memInfo.UsedPercent)
+
+	return nil
 }
