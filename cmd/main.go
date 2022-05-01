@@ -54,6 +54,8 @@ func main() {
 	ticker := time.NewTicker(UPDATE_INTERVAL)
 	done := make(chan bool)
 
+	argsWithoutProg := os.Args[1:]
+
 	if err := ui.Init(); err != nil {
 		log.Fatalf("failed to initialize termui: %v", err)
 	}
@@ -86,7 +88,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	asciiImage, err := view.NewAsciiImageView(getOSLogo(), view.WithReversed(true))
+	var asciiImage *view.AsciiImageView
+	if len(argsWithoutProg) > 0 {
+		asciiImage, err = view.NewAsciiImageView(argsWithoutProg[0], view.WithReversed(true))
+	} else {
+		asciiImage, err = view.NewAsciiImageView(getOSLogo(), view.WithReversed(true))
+	}
+
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to load ascii image view: %v\n", err)
 		os.Exit(1)
@@ -124,7 +132,7 @@ func main() {
 			case <-done:
 				return
 			case <-ticker.C:
-				err := updateViews(cpuView, memView, diskView, hostView)
+				err := updateViews(cpuView, memView, diskView, hostView, userView)
 				if err != nil {
 					fmt.Fprintf(os.Stderr, "Failed to update views: %v\n", err)
 					os.Exit(1)
