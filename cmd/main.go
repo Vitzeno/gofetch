@@ -10,7 +10,7 @@ import (
 	ui "github.com/gizak/termui/v3"
 	"github.com/pkg/errors"
 
-	view "github.com/vitzeno/gofetch/internal/view"
+	internal "github.com/vitzeno/gofetch/internal/view"
 )
 
 const (
@@ -23,7 +23,7 @@ const (
 	UPDATE_INTERVAL = time.Second * 1
 )
 
-func updateViews(view ...view.View) error {
+func updateViews(view ...internal.View) error {
 	for _, v := range view {
 		err := v.Update()
 		if err != nil {
@@ -61,35 +61,35 @@ func main() {
 
 	defer ui.Close()
 
-	memView, err := view.NewMemeView()
+	memView, err := internal.NewMemeView()
 	if err != nil {
 		log.Fatalf("Failed to load memory view: %v", err)
 		os.Exit(1)
 	}
 
-	cpuView, err := view.NewCPUView()
+	cpuView, err := internal.NewCPUView()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to load CPU view: %v\n", err)
 		os.Exit(1)
 	}
 
-	diskView, err := view.NewDiskView()
+	diskView, err := internal.NewDiskView()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to load disk view: %v\n", err)
 		os.Exit(1)
 	}
 
-	hostView, err := view.NewHostView()
+	hostView, err := internal.NewHostView()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to load host view: %v\n", err)
 		os.Exit(1)
 	}
 
-	var asciiImage *view.AsciiImageView
+	var asciiImage *internal.AsciiImageView
 	if len(args) > 0 {
-		asciiImage, err = view.NewAsciiImageView(args[0], view.WithReversed(true))
+		asciiImage, err = internal.NewAsciiImageView(args[0], internal.WithReversed(true))
 	} else {
-		asciiImage, err = view.NewAsciiImageView(getOSLogo(), view.WithReversed(true))
+		asciiImage, err = internal.NewAsciiImageView(getOSLogo(), internal.WithReversed(true))
 	}
 
 	if err != nil {
@@ -97,7 +97,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	userView, err := view.NewUserView()
+	userView, err := internal.NewUserView()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to load user view: %v\n", err)
 		os.Exit(1)
