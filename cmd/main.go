@@ -92,6 +92,12 @@ func main() {
 		os.Exit(1)
 	}
 
+	// asciiImage, err := view.NewAsciiImageView(getOSLogo())
+	// if err != nil {
+	// 	fmt.Fprintf(os.Stderr, "Failed to load ascii image view: %v\n", err)
+	// 	os.Exit(1)
+	// }
+
 	userView, err := view.NewUserView()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Failed to load user view: %v\n", err)

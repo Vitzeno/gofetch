@@ -86,17 +86,5 @@ func readImageBase64(path string) (string, error) {
 		return "", errors.Wrap(err, "Failed to read image file")
 	}
 
-	var base64Encoding string
-	// mimeType := http.DetectContentType(bytes)
-
-	// switch mimeType {
-	// case "image/jpeg":
-	// 	base64Encoding += "data:image/jpeg;base64,"
-	// case "image/png":
-	// 	base64Encoding += "data:image/png;base64,"
-	// }
-
-	base64Encoding += toBase64(bytes)
-
-	return base64Encoding, nil
+	return toBase64(bytes), nil
 }
