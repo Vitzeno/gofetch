@@ -26,12 +26,12 @@ func NewCPUInfo() ([]CPUInfo, error) {
 		return nil, errors.Wrap(err, "Failed to load CPU usage")
 	}
 
-	for i, cpu := range cpus {
+	for _, cpu := range cpus {
 		cpuInfo = append(cpuInfo, CPUInfo{
 			ModelName: cpu.ModelName,
 			Threads:   cpu.Cores,
 			Mhz:       cpu.Mhz,
-			Usage:     usage[i],
+			Usage:     usage[0],
 		})
 	}
 
