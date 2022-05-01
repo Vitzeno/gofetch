@@ -28,7 +28,6 @@ func NewDiskView() (*DiskView, error) {
 	diskGauge := widgets.NewGauge()
 	diskGauge.Percent = int(diskInfo.UsedPercent)
 	diskGauge.BarColor = ui.ColorGreen
-	//diskGauge.Border = false
 
 	return &DiskView{
 		Widget: diskWidget,
@@ -44,6 +43,11 @@ func (d DiskView) Update() error {
 
 	d.Widget.Text = diskInfo.String()
 	d.Gauge.Percent = int(diskInfo.UsedPercent)
+	if diskInfo.UsedPercent > 80 {
+		d.Gauge.BarColor = ui.ColorRed
+	} else {
+		d.Gauge.BarColor = ui.ColorGreen
+	}
 
 	return nil
 }

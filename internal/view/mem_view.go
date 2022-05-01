@@ -27,7 +27,6 @@ func NewMemeView() (*MemView, error) {
 	memGauge := widgets.NewGauge()
 	memGauge.Percent = int(memInfo.UsedPercent)
 	memGauge.BarColor = ui.ColorGreen
-	//memGauge.Border = false
 
 	return &MemView{
 		Widget: memWidget,
@@ -43,6 +42,11 @@ func (m MemView) Update() error {
 
 	m.Widget.Text = memInfo.String()
 	m.Gauge.Percent = int(memInfo.UsedPercent)
+	if memInfo.UsedPercent > 80 {
+		m.Gauge.BarColor = ui.ColorRed
+	} else {
+		m.Gauge.BarColor = ui.ColorGreen
+	}
 
 	return nil
 }

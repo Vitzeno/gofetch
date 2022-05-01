@@ -51,6 +51,11 @@ func (c CPUView) Update() error {
 	}
 
 	c.Gauge.Percent = int(cpuInfo[0].Usage)
+	if cpuInfo[0].Usage > 80 {
+		c.Gauge.BarColor = ui.ColorRed
+	} else {
+		c.Gauge.BarColor = ui.ColorGreen
+	}
 
 	return nil
 }
