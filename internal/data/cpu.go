@@ -11,6 +11,7 @@ type CPUInfo struct {
 	ModelName string
 	Threads   int32
 	Mhz       float64
+	Usage     float64
 }
 
 func NewCPUInfo() ([]CPUInfo, error) {
@@ -20,11 +21,17 @@ func NewCPUInfo() ([]CPUInfo, error) {
 		return nil, errors.Wrap(err, "Failed to load CPU info")
 	}
 
-	for _, cpu := range cpus {
+	usage, err := cpu.Percent(0, false)
+	if err != nil {
+		return nil, errors.Wrap(err, "Failed to load CPU usage")
+	}
+
+	for i, cpu := range cpus {
 		cpuInfo = append(cpuInfo, CPUInfo{
 			ModelName: cpu.ModelName,
 			Threads:   cpu.Cores,
 			Mhz:       cpu.Mhz,
+			Usage:     usage[i],
 		})
 	}
 
@@ -32,5 +39,5 @@ func NewCPUInfo() ([]CPUInfo, error) {
 }
 
 func (c CPUInfo) String() string {
-	return fmt.Sprintf("ModelName: %v\nThreads: %v\nMhz: %v\n", c.ModelName, c.Threads, c.Mhz)
+	return fmt.Sprintf("ModelName: %v\nThreads: %v\nMhz: %v\nUsage: %.0f%% \n", c.ModelName, c.Threads, c.Mhz, c.Usage)
 }

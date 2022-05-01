@@ -11,6 +11,7 @@ import (
 
 type CPUView struct {
 	Widget *widgets.Paragraph
+	Gauge  *widgets.Gauge
 }
 
 func NewCPUView() (*CPUView, error) {
@@ -28,8 +29,13 @@ func NewCPUView() (*CPUView, error) {
 		cpuWidget.Text += cpu.String()
 	}
 
+	cpuGauge := widgets.NewGauge()
+	cpuGauge.Percent = int(cpuInfo[0].Usage)
+	cpuGauge.BarColor = ui.ColorGreen
+
 	return &CPUView{
 		Widget: cpuWidget,
+		Gauge:  cpuGauge,
 	}, nil
 }
 
@@ -43,6 +49,8 @@ func (c CPUView) Update() error {
 	for _, cpu := range cpuInfo {
 		c.Widget.Text += cpu.String()
 	}
+
+	c.Gauge.Percent = int(cpuInfo[0].Usage)
 
 	return nil
 }
