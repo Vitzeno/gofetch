@@ -1,6 +1,6 @@
 # gofetch
 
-Basic crossplatfrom neofetch like program written in go to display system information, typicaly placed in users `.zshrc`/`.bashrc`.
+Basic crossplatfrom neofetch like program written in go to display system information with real time option.
 
 ## Windows
 
