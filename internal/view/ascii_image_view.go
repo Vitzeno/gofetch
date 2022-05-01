@@ -11,16 +11,46 @@ import (
 	"os"
 	"reflect"
 
+	"golang.org/x/image/draw"
+
 	"github.com/gizak/termui/v3/widgets"
 	"github.com/pkg/errors"
 )
 
+const (
+	downscaledX = 45
+	downscaledY = 20
+)
+
 type AsciiImageView struct {
-	Image *widgets.Paragraph
+	Image      *widgets.Paragraph
+	pixelArray []byte
+	reversed   bool
+	path       string
 }
 
-func NewAsciiImageView(path string) (*AsciiImageView, error) {
-	ascii, err := imageFileToASCII(path)
+type AsciiImageOptions func(*AsciiImageView)
+
+func WithReversed(reversed bool) AsciiImageOptions {
+	return func(i *AsciiImageView) {
+		i.reversed = reversed
+	}
+}
+
+func NewAsciiImageView(path string, opts ...AsciiImageOptions) (*AsciiImageView, error) {
+	imgView := &AsciiImageView{}
+	for _, opt := range opts {
+		opt(imgView)
+	}
+
+	imgView.path = path
+
+	imgView.pixelArray = []byte("@80GCLft1i;:,.      ")
+	if imgView.reversed {
+		imgView.pixelArray = revereByteSlice(imgView.pixelArray)
+	}
+
+	ascii, err := imgView.imageFileToASCII()
 	if err != nil {
 		return nil, errors.Wrap(err, "Failed to convert image file to ASCII")
 	}
@@ -29,36 +59,32 @@ func NewAsciiImageView(path string) (*AsciiImageView, error) {
 	asciiWidget.Text = ascii
 	asciiWidget.Border = false
 
-	return &AsciiImageView{
-		Image: asciiWidget,
-	}, nil
+	imgView.Image = asciiWidget
+
+	return imgView, nil
 }
 
-func convertPixel(pixel color.Color) byte {
-	pixels := []byte("Ñ@#W$9876543210?!abc;:+=-,._                    ")
-
+func (i *AsciiImageView) convertPixel(pixel color.Color) byte {
 	r := reflect.ValueOf(pixel).FieldByName("R").Uint()
 	g := reflect.ValueOf(pixel).FieldByName("G").Uint()
 	b := reflect.ValueOf(pixel).FieldByName("B").Uint()
 	a := reflect.ValueOf(pixel).FieldByName("A").Uint()
 
 	intensity := (r + g + b) * a / 255
-	precision := float64(255 * 3 / (len(pixels) - 1))
-	rawChar := pixels[roundValue(float64(intensity)/precision)]
+	precision := float64(255 * 3 / (len(i.pixelArray) - 1))
+	rawChar := i.pixelArray[roundValue(float64(intensity)/precision)]
 
 	return rawChar
 }
 
-func roundValue(value float64) int {
-	return int(math.Floor(value + 0.5))
-}
-
-func imageToASCII(img image.Image) string {
+func (i *AsciiImageView) imageToASCII(img image.Image) string {
 	var ascii string
-	for y := 0; y < img.Bounds().Max.Y; y++ {
-		for x := 0; x < img.Bounds().Max.X; x++ {
-			pixel := img.At(x, y)
-			ascii += fmt.Sprintf("%c", convertPixel(pixel))
+	downscaledImage := downscaledImage(img, downscaledX, downscaledY)
+
+	for y := 0; y < downscaledImage.Bounds().Max.Y; y++ {
+		for x := 0; x < downscaledImage.Bounds().Max.X; x++ {
+			pixel := downscaledImage.At(x, y)
+			ascii += fmt.Sprintf("%c", i.convertPixel(pixel))
 		}
 		ascii += "\n"
 	}
@@ -66,13 +92,13 @@ func imageToASCII(img image.Image) string {
 	return ascii
 }
 
-func imageFileToASCII(path string) (string, error) {
-	img, err := openImage(path)
+func (i *AsciiImageView) imageFileToASCII() (string, error) {
+	img, err := openImage(i.path)
 	if err != nil {
 		return "", errors.Wrap(err, "Failed to open image file")
 	}
 
-	return imageToASCII(img), nil
+	return i.imageToASCII(img), nil
 }
 
 func openImage(path string) (image.Image, error) {
@@ -88,4 +114,22 @@ func openImage(path string) (image.Image, error) {
 	}
 
 	return img, nil
+}
+
+func downscaledImage(img image.Image, width, height int) image.Image {
+	downscaledImage := image.NewRGBA(image.Rect(0, 0, width, height))
+	draw.NearestNeighbor.Scale(downscaledImage, downscaledImage.Bounds(), img, img.Bounds(), draw.Over, nil)
+
+	return downscaledImage
+}
+
+func roundValue(value float64) int {
+	return int(math.Floor(value + 0.5))
+}
+
+func revereByteSlice(slice []byte) []byte {
+	for i, j := 0, len(slice)-1; i < j; i, j = i+1, j-1 {
+		slice[i], slice[j] = slice[j], slice[i]
+	}
+	return slice
 }

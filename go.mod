@@ -8,6 +8,8 @@ require (
 	github.com/shirou/gopsutil v3.21.11+incompatible
 )
 
+require golang.org/x/image v0.0.0-20220413100746-70e8d0d3baa9
+
 require (
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/mattn/go-runewidth v0.0.2 // indirect

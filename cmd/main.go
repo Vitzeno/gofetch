@@ -42,7 +42,7 @@ func getOSLogo() string {
 	case "darwin":
 		return APPLE_LOGO_PATH
 	case "linux":
-		return LINUX_LOGO_PATH
+		return UBUNTU_LOGO_PATH
 	default:
 		fmt.Printf("%s.\n", os)
 	}
@@ -86,17 +86,11 @@ func main() {
 		os.Exit(1)
 	}
 
-	imageView, err := view.NewImageView(view.WithImagePath(getOSLogo()))
+	asciiImage, err := view.NewAsciiImageView(getOSLogo(), view.WithReversed(true))
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Failed to load image view: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Failed to load ascii image view: %v\n", err)
 		os.Exit(1)
 	}
-
-	// asciiImage, err := view.NewAsciiImageView(getOSLogo())
-	// if err != nil {
-	// 	fmt.Fprintf(os.Stderr, "Failed to load ascii image view: %v\n", err)
-	// 	os.Exit(1)
-	// }
 
 	userView, err := view.NewUserView()
 	if err != nil {
@@ -107,7 +101,7 @@ func main() {
 	baseGrid.SetRect(0, 0, xDim, yDim)
 	baseGrid.Set(
 		ui.NewCol(0.55,
-			ui.NewRow(0.8, imageView.Image),
+			ui.NewRow(0.8, asciiImage.Image),
 			ui.NewRow(0.2, userView.Widget),
 		),
 		ui.NewCol(0.45,
